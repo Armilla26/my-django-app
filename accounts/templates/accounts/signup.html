@@ -1,0 +1,27 @@
+<!--
+for accounts app
+
+template/signup.html
+-->
+
+
+{% extends 'base.html' %}
+{% block content %}
+<div class="container" id="signupContainer">
+  <h1>SmartMeal Planner</h1>
+  <p class="subtitle">Create your free account</p>
+  <form method="post" id="signupForm">
+    {% csrf_token %}
+    <label for="id_username">Username</label>
+    <input id="id_username" name="username" type="text" required placeholder="Choose a username" />
+    <label for="id_email">Email</label>
+    <input id="id_email" name="email" type="email" required placeholder="Enter your email" />
+    <label for="id_password">Password</label>
+    <input id="id_password" name="password" type="password" required placeholder="Create a strong password" />
+    <label for="id_password_confirm">Confirm Password</label>
+    <input id="id_password_confirm" name="password_confirm" type="password" required placeholder="Confirm your password" />
+    <button type="submit">Sign Up</button>
+  </form>
+  <p class="toggle-auth">Already have an account? <a href="{% url 'accounts:login' %}">Log in here</a></p>
+</div>
+{% endblock %}

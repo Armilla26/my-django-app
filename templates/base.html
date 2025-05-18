@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>SmartMeal Planner</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@400;700&display=swap');
+
+    *, *::before, *::after {
+      box-sizing: border-box;
+    }
+    body {
+      margin: 0; padding: 20px;
+      font-family: 'Quicksand', sans-serif;
+      background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+      min-height: 100vh;
+      color: #493d3d;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      user-select: none;
+    }
+    .container {
+      background: rgba(255, 255, 255, 0.85);
+      box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-radius: 32px;
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      max-width: 900px;
+      width: 100%;
+      padding: 2.5rem 3rem;
+      animation: fadeInUp 1s ease forwards;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    @keyframes fadeInUp {
+      from {opacity: 0; transform: translateY(20px);}
+      to {opacity: 1; transform: translateY(0);}
+    }
+    h1 {
+      font-size: 2.8rem;
+      font-weight: 700;
+      margin-bottom: 0.4rem;
+      letter-spacing: 0.1em;
+      font-style: italic;
+      font-variant: small-caps;
+      color: #b93b32;
+      text-shadow: 1px 1px 8px #ffb7b7aa;
+      user-select: text;
+    }
+    h2 {
+      margin: 0 0 1.5rem;
+      font-size: 2rem;
+      color: #e24226;
+      font-weight: 800;
+      text-align: center;
+      letter-spacing: 0.06em;
+      text-shadow: 1px 1px 4px #ffbcbcaa;
+    }
+    p.subtitle {
+      margin-top: 0;
+      margin-bottom: 2rem;
+      font-weight: 500;
+      font-size: 1.15rem;
+      color: #934831;
+      font-style: oblique;
+      text-shadow: 0 1px 4px #ffababaa;
+      user-select: text;
+    }
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 1.4rem;
+      user-select: text;
+      width: 100%;
+    }
+    label {
+      font-weight: 700;
+      font-size: 1.05rem;
+      color: #9f4647;
+      text-align: left;
+      user-select: text;
+    }
+    input[type="text"],
+    input[type="email"],
+    input[type="password"],
+    input[type="number"],
+    textarea,
+    select {
+      border-radius: 24px;
+      border: none;
+      padding: 12px 18px;
+      font-size: 1rem;
+      font-weight: 600;
+      color: #762f30;
+      background: #ffdede;
+      box-shadow: inset 6px 6px 14px #dd8787, inset -6px -6px 14px #ffb5b5;
+      transition: background-color 0.35s ease, color 0.35s ease;
+      font-family: 'Quicksand', sans-serif;
+      width: 100%;
+    }
+    input[type="text"]:focus,
+    input[type="email"]:focus,
+    input[type="password"]:focus,
+    input[type="number"]:focus,
+    textarea:focus,
+    select:focus {
+      outline: none;
+      background-color: #ffb7b7;
+      color: #4b1c1c;
+      box-shadow: 0 0 16px #af3333cc;
+    }
+    textarea {
+      resize: vertical;
+      min-height: 70px;
+    }
+    button[type="submit"] {
+      background: linear-gradient(45deg, #b93234, #ff6a6a);
+      border-radius: 40px;
+      border: none;
+      padding: 14px 0;
+      font-weight: 900;
+      font-size: 1.3rem;
+      color: white;
+      cursor: pointer;
+      user-select: none;
+      box-shadow: 0 7px 22px #ff7272bb;
+      transition: background 0.35s ease, transform 0.15s ease;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      font-family: inherit;
+    }
+    button[type="submit"]:hover {
+      background: linear-gradient(45deg, #d54648, #ff8181);
+      transform: translateY(-3px) scale(1.03);
+      box-shadow: 0 10px 30px #ef7e7ecc;
+    }
+    button[type="submit"]:active {
+      transform: translateY(0);
+      box-shadow: 0 5px 15px #af3333cc;
+    }
+    .toggle-auth {
+      margin-top: 2rem;
+      font-weight: 600;
+      font-size: 1rem;
+      user-select: text;
+      color: #b93737cc;
+    }
+    .toggle-auth a {
+      color: #b93234;
+      font-weight: 700;
+      text-decoration: underline;
+      user-select: text;
+    }
+    nav {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+    }
+    nav a {
+      color: #b93234;
+      font-weight: 700;
+      margin-left: 15px;
+      text-decoration: none;
+    }
+    nav a:hover {
+      text-decoration: underline;
+    }
+    header {
+      text-align: center;
+      color: #5f3d3d;
+      text-shadow: 0 2px 8px rgba(172, 108, 108, 0.3);
+    }
+    header p {
+      font-size: 1.1rem;
+      font-weight: 500;
+      margin-top: 0.3rem;
+      color: #883f45;
+      font-style: oblique;
+      text-shadow: 0 1px 4px rgba(172, 108, 108, 0.18);
+    }
+    form#mealForm {
+      background: rgba(248, 206, 206, 0.65);
+      border-radius: 36px;
+      box-shadow: inset 10px 10px 24px #ffd2d2, inset -10px -10px 24px #fda6a6;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1.8rem 2.6rem;
+      padding: 2rem 2.5rem 2.4rem;
+      color: #4a2e2e;
+      font-weight: 700;
+      font-size: 1.1rem;
+      letter-spacing: 0.03em;
+      user-select: text;
+      transition: box-shadow 0.45s ease;
+    }
+    form#mealForm:hover {
+      box-shadow: inset 12px 12px 28px #ff9393, inset -12px -12px 28px #dd5d62;
+    }
+    .summary {
+      text-align: right;
+      font-weight: 900;
+      font-size: 1.5rem;
+      color: #bf1f2e;
+      text-shadow: 0 0 7px #ff8fa3bb;
+      letter-spacing: 0.05em;
+      user-select: none;
+      width: 100%;
+    }
+    .meals-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 1.6rem 2.2rem;
+      width: 100%;
+    }
+    .meal-type-group {
+      background: rgba(191, 46, 30, 0.1);
+      padding: 1.6rem 1.8rem;
+      border-radius: 30px;
+      box-shadow: inset 0 0 18px #ffadad99;
+      display: flex;
+      flex-direction: column;
+      user-select: text;
+    }
+    .meal-type-group h3 {
+      margin: 0 0 1rem;
+      color: #bf1f2e;
+      font-weight: 700;
+      font-size: 1.45rem;
+      letter-spacing: 0.06em;
+      text-shadow: 1px 1px 5px #ff9aa2bb;
+      text-transform: uppercase;
+      border-bottom: 2px solid #ff878f90;
+      padding-bottom: 0.5rem;
+    }
+    ul.meal-items {
+      list-style-type: none;
+      margin: 0; padding: 0;
+    }
+    ul.meal-items li {
+      background: rgba(255, 255, 255, 0.8);
+      border-radius: 22px;
+      padding: 1rem 1.2rem;
+      margin-bottom: 0.9rem;
+      font-weight: 600;
+      font-size: 1.05rem;
+      color: #7a393e;
+      box-shadow: 0 8px 20px #ff9da0bb;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      transition: transform 0.20s ease, box-shadow 0.25s ease;
+    }
+    ul.meal-items li:hover {
+      transform: translateX(10px) scale(1.02);
+      box-shadow: 0 15px 25px #ff8d91cc;
+    }
+    ul.meal-items li strong {
+      font-weight: 800;
+      font-size: 1.15rem;
+      color: #a8252c;
+      letter-spacing: 0.02em;
+    }
+    ul.meal-items li .ingredients {
+      font-style: italic;
+      font-size: 0.93rem;
+      color: #b04040;
+      margin-left: 0.2rem;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    ul.meal-items li .calories {
+      align-self: flex-end;
+      font-weight: 700;
+      color: #bf1f2e;
+    }
+    ul.meal-items li .actions {
+      margin-top: 10px;
+      display: flex;
+      gap: 10px;
+      justify-content: flex-end;
+    }
+    .actions a {
+      color: #b93234;
+      font-weight: 700;
+      text-decoration: none;
+      padding: 6px 14px;
+      border-radius: 20px;
+      background: linear-gradient(60deg, #df3943, #ff8b88);
+      color: white;
+      box-shadow: 0 8px 20px #f87078bb;
+      transition: background-color 0.3s ease, transform 0.1s ease;
+    }
+    .actions a:hover {
+      filter: brightness(0.9);
+      transform: translateY(-2px);
+    }
+    @media (max-width: 650px) {
+      .meals-list {
+        grid-template-columns: 1fr !important;
+      }
+      form#mealForm {
+        grid-template-columns: 1fr !important;
+        gap: 1rem;
+        padding-bottom: 2.2rem;
+      }
+    }
+    @media (max-width: 400px) {
+      body {
+        padding: 15px 12px;
+      }
+      .container {
+        padding: 2rem 1.7rem 3rem;
+        border-radius: 24px;
+      }
+      h1 {
+        font-size: 2.2rem;
+      }
+    }
+    
+    .messages {
+      position: absolute;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 80%;
+      max-width: 500px;
+      text-align: center;
+      background-color: rgba(255, 0, 0, 0.1);
+      color: red;
+      padding: 10px;
+      border-radius: 8px;
+      box-shadow: 0 2px 10px rgba(255, 0, 0, 0.2);
+      z-index: 1000;
+    }
+  </style>
+</head>
+<body>
+  {% if messages %}
+    <div class="messages">
+      {% for message in messages %}
+        <p>{{ message }}</p>
+      {% endfor %}
+    </div>
+  {% endif %}
+  <nav>
+    {% if user.is_authenticated %}
+      <a href="{% url 'mealplanner:dashboard' %}">Dashboard</a>
+      <a href="{% url 'accounts:logout' %}">Logout</a>
+    {% else %}
+      <a href="{% url 'accounts:login' %}">Login</a>
+      <a href="{% url 'accounts:signup' %}">Signup</a>
+    {% endif %}
+  </nav>
+  {% block content %}{% endblock %}
+</body>
+</html>

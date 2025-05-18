@@ -1,0 +1,5 @@
+mao ni name, email, and password para ma open ang django admin panel
+
+username: samantha
+email: samantha@gmail.com   
+password: samantha123

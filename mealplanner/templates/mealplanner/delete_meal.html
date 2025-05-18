@@ -1,0 +1,18 @@
+<!--
+for mealplanner apps
+
+templates/mealplanner/delete_meal.html
+-->
+
+{% extends 'base.html' %}
+{% block content %}
+<div class="container">
+  <h2>Delete Meal</h2>
+  <p>Are you sure you want to delete "{{ meal.meal_name }}"?</p>
+  <form method="post">
+    {% csrf_token %}
+    <button type="submit">Yes, Delete</button>
+    <a href="{% url 'mealplanner:dashboard' %}">Cancel</a>
+  </form>
+</div>
+{% endblock %}

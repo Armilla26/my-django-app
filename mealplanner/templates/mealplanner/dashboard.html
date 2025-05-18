@@ -1,0 +1,48 @@
+<!--
+for mealplanner apps
+
+templates/mealplanner/dashboard.html
+-->
+
+
+{% extends 'base.html' %}
+{% block content %}
+<div class="container">
+  <header>
+    <h1>SmartMeal Planner</h1>
+    <p>Plan your meals intelligently & track your calories!</p>
+  </header>
+  <form id="mealForm" method="post">
+    {% csrf_token %}
+    <div><label for="mealName">Meal Name</label><input type="text" id="mealName" name="mealName" required placeholder="Quinoa Avocado Salad" /></div>
+    <div><label for="mealType">Meal Type</label><select id="mealType" name="mealType" required><option value="" disabled selected>Choose type</option><option value="Breakfast">Breakfast ☀️</option><option value="Lunch">Lunch 🍴</option><option value="Dinner">Dinner 🌙</option><option value="Snack">Snack 🍓</option></select></div>
+    <div><label for="ingredients">Ingredients</label><textarea id="ingredients" name="ingredients" required placeholder="Quinoa, Avocado, Cherry tomatoes"></textarea></div>
+    <div><label for="calories">Calories (kcal)</label><input type="number" id="calories" name="calories" min="1" max="5000" required placeholder="450" /></div>
+    <button type="submit">Add Meal</button>
+  </form>
+  <section class="summary">Total Calories Today: <span id="totalCalories">{{ total_calories }}</span> kcal</section>
+  <section class="meals-list">
+    {% regroup meals by meal_type as meal_groups %}
+    {% for group in meal_groups %}
+      <div class="meal-type-group">
+        <h3>{{ group.grouper }}</h3>
+        <ul class="meal-items">
+          {% for meal in group.list %}
+            <li>
+              <strong>{{ meal.meal_name }}</strong>
+              <div class="ingredients">{{ meal.ingredients }}</div>
+              <div class="calories">{{ meal.calories }} kcal</div>
+              <div class="actions">
+                <a href="{% url 'mealplanner:edit_meal' meal.id %}">✏️ Edit</a>
+                <a href="{% url 'mealplanner:delete_meal' meal.id %}">🗑️ Delete</a>
+              </div>
+            </li>
+          {% endfor %}
+        </ul>
+      </div>
+    {% empty %}
+      <p>No meals planned yet.</p>
+    {% endfor %}
+  </section>
+</div>
+{% endblock %}

@@ -1,0 +1,20 @@
+<!--
+for accounts app
+
+template/login.html
+-->
+
+
+{% extends 'base.html' %}
+{% block content %}
+<div class="container" id="loginContainer">
+  <h1>SmartMeal Planner</h1>
+  <p class="subtitle">Log in to plan your delicious meals</p>
+  <form method="post" id="loginForm">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Log In</button>
+  </form>
+  <p class="toggle-auth">Don't have an account? <a href="{% url 'accounts:signup' %}">Sign up here</a></p>
+</div>
+{% endblock %}
